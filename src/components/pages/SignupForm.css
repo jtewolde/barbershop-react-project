@@ -1,0 +1,77 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    color: white;
+    background-color: gray;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;;
+
+}
+
+.signup-form {
+    width: 360px;
+    margin: 50px auto;
+    padding: 30px 25px;
+    background: transparent;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.signup-form h1 {
+    font-size: 24px;
+    margin-bottom: 60px;
+    color: white;
+    font-style: bold, underline;
+}
+
+.signup-form input {
+    width: 100%;
+    height: 40px;
+    margin-bottom: 20px;
+    padding: 0 10px;
+    border: none;
+    border-bottom: 2px solid #c5f6fa;
+    background: transparent;
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+    transition: 0.2s;
+    color: white;
+}
+
+.signup-form input:focus {
+    border-bottom: 2px solid #2c3e50;
+}
+
+.signup-form button {
+    width: 100%;
+    height: 40px;
+    background: #2c3e50;
+    border: none;
+    border-radius: 20px;
+    color: white;
+    font-size: 18px;
+    font-family: 'Roboto', sans-serif;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.signup-form button:hover {
+    background: #19B5FE;
+}
+
+.signup-form input::placeholder {
+    color: white;
+}
+
