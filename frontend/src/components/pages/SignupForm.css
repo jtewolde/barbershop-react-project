@@ -69,6 +69,7 @@
 .signup-form button {
     width: 100%;
     height: 40px;
+    margin: 10px;
     background: #2c3e50;
     border: none;
     border-radius: 20px;
@@ -85,5 +86,12 @@
 
 .signup-form input::placeholder {
     color: white;
+}
+
+.error {
+    color: red;
+    font-size: 14px;
+    margin-top: -10px;
+
 }
 
