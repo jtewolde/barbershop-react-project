@@ -2,9 +2,9 @@
 import './App.css';
 import Navbar  from './components/Navbar';
 import React from 'react';
-import  BarberSignupForm from './components/pages/BarberSignupForm';
-import  CustomerSignupForm  from './components/pages/CustomerSignupForm';
-import  LoginForm from './components/pages/LoginForm';
+import  BarberSignupForm from './components/pages/authentication/BarberSignupForm';
+import  CustomerSignupForm  from './components/pages/authentication/CustomerSignupForm';
+import  LoginForm from './components/pages/authentication/LoginForm';
 import Home from './components/pages/Home';
 import { Route, Routes } from 'react-router-dom';
 
