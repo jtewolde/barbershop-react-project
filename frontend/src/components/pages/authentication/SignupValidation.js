@@ -35,44 +35,57 @@ function validateConfirmPassword(password, confirmPassword) {
 
 function SignupValidation(values) {
   const errors = {};
+  var trackErrors = false; // This variable is used to track if there are any errors in the form
 
   if (!values.firstName.trim()) {
     errors.firstName = 'First Name is required';
+    trackErrors = true; 
   }
 
   if (!values.lastName.trim()) {
     errors.lastName = 'Last Name is required';
+    trackErrors = true; 
   }
 
   if (!values.username.trim()) {
     errors.username = 'Username is required';
+    trackErrors = true;
   }
 
   if (!values.email.trim()) {
     errors.email = 'Email is required';
+    trackErrors = true;
   } else if (!validateEmail(values.email)) {
     errors.email = 'Email is invalid';
+    trackErrors = true;
   }
 
   if (!values.phoneNumber.trim()) {
     errors.phoneNumber = 'Phone Number is required';
+    trackErrors = true;
   } else if (!validatePhoneNumber(values.phoneNumber)) {
     errors.phoneNumber = 'Phone Number is invalid';
+    trackErrors = true;
   }
 
   if (!values.password.trim()) {
     errors.password = 'Password is required';
+    trackErrors = true;
   } else if (!validatePassword(values.password)) {
     errors.password = 'Password must be at least 6 characters';
+    trackErrors = true;
   }
 
   if (!values.confirmPassword.trim()) {
     errors.confirmPassword = 'Confirm Password is required';
+    trackErrors = true;
   } else if (!validateConfirmPassword(values.password, values.confirmPassword)) {
     errors.confirmPassword = 'Passwords do not match';
+    trackErrors = true;
   }
-
-  return errors;
+  console.log("Track Errors: ", trackErrors); // This line is used to log the trackErrors variable
+  return errors; // Returns the errors object
+  
 }
 
 export default SignupValidation;

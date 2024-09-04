@@ -3,8 +3,9 @@ import { auth } from '../../../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import './SignupForm.css';
 import SignupValidation from './SignupValidation';
+import { useNavigate } from 'react-router-dom';
 
-export default function BarberSignupForm() {
+export default function BarberSignupForm({user}) {
     // This is the form for the barber sign up
 
     // The following are the states for the barber sign up form
@@ -22,6 +23,8 @@ export default function BarberSignupForm() {
 
     const [errors, setErrors] = useState({}); // The errors state is used to store the errors returned by the validation function
 
+    const navigate = useNavigate();
+
     // This function handles the submission of the barber sign up form
     function handleSubmit(e) {
         e.preventDefault();
@@ -37,27 +40,55 @@ export default function BarberSignupForm() {
         });
     }
 
+    // This function is used to clear the input fields of the barber sign up form when the form is submitted successfully
+    const clearInputs = () => {
+        setValues({
+            firstName: '',
+            lastName: '',
+            username: '',
+            email: '',
+            phoneNumber: '',
+            barberShopName: '',
+            barberShopAddress: '',
+            password: '',
+            confirmPassword: ''
+        });
+    }
+
     // This function is used to create a new user with the email and password provided
     const signUp = async () => {
-        try {
-            const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
-            const user = userCredential.user;
-            console.log(user);
-            console.log("User signed up successfully");
+        try{
+            if(Object.keys(errors).length === 0 && errors.constructor === Object){ // If there are no errors in the form
+                const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+                const user = userCredential.user;
+                console.log(user);
+                console.log("User signed up successfully");
+                navigate('/private');
+            } else {
+                console.log("User not signed up");
+                console.log(errors);
+            }
         }
         catch (error) {
             console.log(error.message);
-        }
     }
-
+}
     // This function is used to handle the sign up and submission of the barber sign up form 
     // It calls the signUp function and the handleSubmit function for the submit button to work
     const handleSignupAndSubmit = (e) => {
         signUp();
         handleSubmit(e);
+        clearInputs();
+        signUpMessage();
     }
 
-
+    // This function is used to display a message if the user has signed up successfully
+    const signUpMessage = () => {
+        if(Object.keys(errors).length === 0 && errors.constructor === Object){
+            return <p className="success">You have signed up successfully!</p>
+        }
+    }
+    
     return (
         <div className="barber-signup-background">
             <div className="signup-form">

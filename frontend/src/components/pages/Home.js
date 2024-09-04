@@ -1,7 +1,7 @@
 import React from "react";
 import './Home.css';
 
-export default function Home() {
+export default function Home({ user }) {    // This is the Home component 
     return (
         <div className="home-background"> {/* Unique wrapper class */}
             <div className='home'>

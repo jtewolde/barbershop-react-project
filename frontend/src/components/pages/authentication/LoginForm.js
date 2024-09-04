@@ -1,63 +1,64 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import './LoginForm.css';
 import validateLogin from "./LoginValidation";
 import { auth } from "../../../firebase";
-import { signInWithCredential } from "firebase/auth";
-import Test from "../test";
+import { signInWithEmailAndPassword } from "firebase/auth"; // Using signInWithEmailAndPassword for email/password sign-in
+import { useNavigate } from "react-router-dom";
+import './privateTestForm'
 
-
-export default function LoginForm() {
-
-    // These are the states for the username and password for the login form
+export default function LoginForm({ user }) {
     const [values, setValues] = useState({
         email: '',
         password: ''
     });
 
-    const [errors, setErrors] = useState({}); // The errors state is used to store the errors returned by the validation function
+    const [errors, setErrors] = useState({});
 
-    // This function handles the submission of the login form
+    const navigate = useNavigate();
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        setErrors(validateLogin(values)); // The validation function is called and the returned errors are stored in the errors state
-    }
+        setErrors(validateLogin(values));
+    };
 
-    // This function handles the change in the input fields of the login form
     const handleLoginChange = (e) => {
         const { name, value } = e.target;
         setValues({
             ...values,
             [name]: value
         });
-    }
+    };
 
-    // This function is used to sign in the user with the email and password provided
     const signIn = async () => {
         try {
-            const userCredential = await signInWithCredential(auth, values.email, values.password);
-            const user = userCredential.user;
-            console.log(user);
-            console.log("User signed in successfully");
+            const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
+            console.log("User signed in successfully:", userCredential.user);
+            navigate('/private');
+        } catch (error) {
+            console.log("Error signing in:", error.message);
         }
-        catch (error) {
-            console.log(error.message);
-        }
-    }
+    };
 
+    // Clear the form inputs
+    const clearInputs = () => {
+        setValues({
+            email: '',
+            password: ''
+        });
+    };
 
-    // This function is used to handle the sign in and submission of the login form
-    // It calls the signIn function and the handleSubmit function for the submit button to work
     const handleLoginAndSubmit = (e) => {
-        signIn();
-        handleSubmit(e);
-        Test();
-    }
+        e.preventDefault(); // Prevent default form submission behavior
+        signIn();           // Sign in the user
+        handleSubmit(e);    // Validate the form
+        clearInputs();      // Clear the form inputs
+    };
 
     return (
         <div className="login-background">
             <div className="login-form">
                 <h1>Login</h1>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleLoginAndSubmit}>
                     <div className="form-group">
                         <label>Email</label>
                         <input type="text" name="email" value={values.email} onChange={handleLoginChange} />
@@ -68,9 +69,12 @@ export default function LoginForm() {
                         <input type="password" name="password" value={values.password} onChange={handleLoginChange} />
                         {errors.password && <p className='error'>{errors.password}</p>}
                     </div>
-                    <button type="submit" onClick={handleLoginAndSubmit}>Login</button>
+                    <button type="submit">Login</button>
                 </form>
+
+                <h1>User Logged In</h1>
+                {auth.currentUser ? auth.currentUser.email : "No user is currently logged in."}
             </div>
         </div>
-    )
+    );
 }

@@ -3,8 +3,9 @@ import './SignupForm.css';
 import SignupValidation from './SignupValidation';
 import { auth } from '../../../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
-export default function CustomerSignupForm() {
+export default function CustomerSignupForm({user}) {
     // This is the form for the customer sign up
 
     // The following are the states for the customer sign up form
@@ -19,6 +20,8 @@ export default function CustomerSignupForm() {
     });
 
     const [errors, setErrors] = useState({}); // The errors state is used to store the errors returned by the validation function
+
+    const navigate = useNavigate();
 
     // This function handles the submission of the customer sign up form
     const handleSubmit = (e) => {
@@ -36,17 +39,34 @@ export default function CustomerSignupForm() {
         });
     }
 
-    // This function is used to sign up the user with the email and password provided
+    // This function is used to create a new user with the email and password provided
     const signUp = async () => {
-        try {
-            const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
-            const user = userCredential.user;
-            console.log(user);
-            console.log("User signed up successfully");
+        try{
+            if(Object.keys(errors).length === 0 && errors.constructor === Object){ // If there are no errors in the form
+                const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+                const user = userCredential.user;
+                console.log(user);
+                console.log("User signed up successfully");
+                navigate('/private');
+            } else {
+                console.log("User not signed up");
+                console.log(errors);
+            }
         }
         catch (error) {
             console.log(error.message);
-        }
+    }
+}
+    const clearInputs = () => {
+        setValues({
+            firstName: '',
+            lastName: '',
+            username: '',
+            email: '',
+            phoneNumber: '',
+            password: '',
+            confirmPassword: ''
+        });
     }
 
     // This function is used to handle the sign up and submission of the customer sign up form
@@ -54,6 +74,19 @@ export default function CustomerSignupForm() {
     const handleSignupAndSubmit = (e) => {
         signUp();
         handleSubmit(e);
+
+        if(Object.keys(errors).length === 0 && errors.constructor === Object){
+            clearInputs();
+        }
+
+        signUpMessage();
+    }
+
+    // This function is used to display a success message when the user signs up successfully with no errors and the user is signed in
+    const signUpMessage = () => {
+        if (Object.keys(errors).length === 0 && errors.constructor === Object && user) {
+            return <p className="success">Sign up successful!</p>
+        }
     }
 
     return (

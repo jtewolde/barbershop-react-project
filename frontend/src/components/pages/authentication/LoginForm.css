@@ -7,15 +7,15 @@
 }
 
 .login-background{
-    background-image: url(../images/cut2.jpg);
+    background-image: url(../images/cut5.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     display: flex;
     justify-content: center;
     align-items: center;
+    height : 100vh;
 }
-
 
 .login-form {
     width: 360px;
@@ -101,6 +101,13 @@
     font-size: 14px;
     margin-top: -10px;
     margin-bottom: 40px;
+    text-align: center;
+}
+
+.success {
+    color: green;
+    font-size: 24px;
+    font-weight: bold;
     text-align: center;
 }
 
