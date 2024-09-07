@@ -1,25 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
-/* body {
-    font-family: 'Poppins';
-    color: white;
-    background-color: gray;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
-    background-image: url(./images/cut4.jpg);
 
-} */
 
 .home-background{
     background-image: url(./images/cut4.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    height: 100vh;
+    height: 110vh;
     display: flex;
     justify-content: center;
     align-items: center;

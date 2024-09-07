@@ -4,6 +4,9 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import './SignupForm.css';
 import SignupValidation from './SignupValidation';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { setDoc, doc, collection } from 'firebase/firestore';
+import { db } from '../../../firebase';
 
 export default function BarberSignupForm({user}) {
     // This is the form for the barber sign up
@@ -62,10 +65,27 @@ export default function BarberSignupForm({user}) {
                 const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
                 const user = userCredential.user;
                 console.log(user);
+
+                // This section of the code is used to store the user information in the database
+                if(user){
+                    const userRef = doc(collection(db, "barbers"), user.uid);
+                    await setDoc(userRef, {
+                        firstName: values.firstName,
+                        lastName: values.lastName,
+                        username: values.username,
+                        email: values.email,
+                        phoneNumber: values.phoneNumber,
+                        barberShopName: values.barberShopName,
+                        barberShopAddress: values.barberShopAddress
+                    });
+                }
+
                 console.log("User signed up successfully");
+                toast.success("Welcome! You have signed up successfully!", {duration: 4000});
                 navigate('/private');
             } else {
                 console.log("User not signed up");
+                toast.error("An error occurred while signing up");
                 console.log(errors);
             }
         }
@@ -73,6 +93,7 @@ export default function BarberSignupForm({user}) {
             console.log(error.message);
     }
 }
+
     // This function is used to handle the sign up and submission of the barber sign up form 
     // It calls the signUp function and the handleSubmit function for the submit button to work
     const handleSignupAndSubmit = (e) => {
@@ -85,7 +106,9 @@ export default function BarberSignupForm({user}) {
     // This function is used to display a message if the user has signed up successfully
     const signUpMessage = () => {
         if(Object.keys(errors).length === 0 && errors.constructor === Object){
-            return <p className="success">You have signed up successfully!</p>
+            return (
+                toast.success("User signed up successfully!")
+            );
         }
     }
     
@@ -97,29 +120,29 @@ export default function BarberSignupForm({user}) {
                 <form onSubmit={signUp}>
 
                 <input type="text" name="firstName" placeholder="First Name" value={values.firstName} onChange={handleChange} />
-                {errors.firstName && <p className="error">{errors.firstName}</p>}
+                {/* {errors.firstName && <p className="error">{errors.firstName}</p>} */}
 
                 <input type="text" name="lastName" placeholder="Last Name" value={values.lastName} onChange={handleChange} />
-                {errors.lastName && <p className="error">{errors.lastName}</p>}
+                {/* {errors.lastName && <p className="error">{errors.lastName}</p>} */}
 
                 <input type="text" name="username" placeholder="Username" value={values.username} onChange={handleChange} />
-                {errors.username && <p className="error">{errors.username}</p>}
+                {/* {errors.username && <p className="error">{errors.username}</p>} */}
 
                 <input type="email" name="email" placeholder="Email" value={values.email} onChange={handleChange} />
-                {errors.email && <p className="error">{errors.email}</p>}
+                {/* {errors.email && <p className="error">{errors.email}</p>} */}
 
                 <input type="tel" name="phoneNumber" placeholder="Phone Number" value={values.phoneNumber} onChange={handleChange} />
-                {errors.phoneNumber && <p className="error">{errors.phoneNumber}</p>}
+                {/* {errors.phoneNumber && <p className="error">{errors.phoneNumber}</p>} */}
 
                 <input type="text" name="barberShopName" placeholder="Barber Shop Name" value={values.barberShopName} onChange={handleChange} />
 
                 <input type="text" name="barberShopAddress" placeholder="Barber Shop Address" value={values.barberShopAddress} onChange={handleChange} />
                 
                 <input type="password" name="password" placeholder="Password" value={values.password} onChange={handleChange} />
-                {errors.password && <p className="error">{errors.password}</p>}
+                {/* {errors.password && <p className="error">{errors.password}</p>} */}
 
                 <input type="password" name="confirmPassword" placeholder="Confirm Password" value={values.confirmPassword} onChange={handleChange} />
-                {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
+                {/* {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>} */}
 
                 <button type="submit" onClick={handleSignupAndSubmit}>Sign Up</button>
 

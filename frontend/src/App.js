@@ -5,6 +5,8 @@ import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
+import { Toaster } from 'react-hot-toast';
+import { Navigate } from 'react-router-dom';
 
 import Navbar  from './components/Navbar';
 import  BarberSignupForm from './components/pages/authentication/BarberSignupForm';
@@ -43,7 +45,9 @@ function App() {
   return (
     <div className="App">
       <Navbar />
+      <Toaster position = "top-right" reverseOrder={false} />
         <Routes>
+          <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={<Home />} />
           <Route path="/barber-signup" element={<BarberSignupForm />} />
           <Route path="/customer-signup" element={<CustomerSignupForm />} />
