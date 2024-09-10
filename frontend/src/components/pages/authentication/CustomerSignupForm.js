@@ -62,7 +62,7 @@ export default function CustomerSignupForm({ user }) {
                     });
 
                     toast.success("Welcome! You have signed up successfully!", { duration: 4000 }); // Show success message
-                    navigate('/private'); // Redirect to private page
+                    navigate('/available-barbers'); // Navigate to the available barbers page
                 }
             } catch (error) {
                 toast.error("An error occurred during sign-up. Please try again."); // Show error message for exceptions

@@ -3,7 +3,7 @@ import './Navbar.css';
 import { Link } from 'react-router-dom';
 import timelyCutsLogo from "../components/pages/images/TimelyCuts2.png";
 
-function Navbar() {
+export default function Navbar() {
     return (
         <nav className="navbar">
             <img src ={timelyCutsLogo} alt="Timely Cuts Logo" className="navbar-logo" />
@@ -17,4 +17,3 @@ function Navbar() {
     )
 }
 
-export default Navbar;

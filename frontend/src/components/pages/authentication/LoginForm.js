@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import './LoginForm.css';
 import validateLogin from "./LoginValidation";
-import { auth } from "../../../firebase";
+import { auth , db } from "../../../firebase"; // Import the auth and db from the firebase.js file
 import { signInWithEmailAndPassword } from "firebase/auth"; // Using signInWithEmailAndPassword for email/password sign-in
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { collection, query, getDocs } from "firebase/firestore";
 import './privateTestForm'
 
 export default function LoginForm({ user }) {
@@ -36,8 +37,23 @@ export default function LoginForm({ user }) {
             const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
             console.log("User signed in successfully:", userCredential.user);
 
-            // Redirect the user to the private page after successful sign-in
-            navigate('/private');
+            // If the user is in the barbers collection, redirect to the private page
+            const barbersSnapshot = await getDocs(query(collection(db, "barbers"))); // Get all the barbers from the database
+            barbersSnapshot.forEach((doc) => { // Loop through the barbers
+                if (doc.data().email === values.email) {  // If the barber's email matches the user's email, redirect to the private page
+                    navigate("/private"); 
+                }
+            });
+
+            // If the user is in the customers collection, redirect to the available barbers page
+            const customersSnapshot = await getDocs(query(collection(db, "customers"))); // Get all the customers from the database
+            customersSnapshot.forEach((doc) => { // Loop through the customers
+                if (doc.data().email === values.email) { // If the customer's email matches the user's email, redirect to the available barbers page
+                    navigate("/available-barbers");
+                }
+            }
+            );
+
             toast.success("User signed in successfully", { duration: 4000 });
         } catch (error) {
             console.log("Error signing in:", error.message);

@@ -7,13 +7,16 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
 import { Toaster } from 'react-hot-toast';
 import { Navigate } from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 
 import Navbar  from './components/Navbar';
+import CustomerNavbar from './components/CustomerNavbar';
 import  BarberSignupForm from './components/pages/authentication/BarberSignupForm';
 import  CustomerSignupForm  from './components/pages/authentication/CustomerSignupForm';
 import  LoginForm from './components/pages/authentication/LoginForm';
 import Home from './components/pages/Home';
 import PrivateTestForm from './components/pages/authentication/privateTestForm';
+import AvailableBarbers from './components/pages/appointments/AvailableBarbers';
 
 import { ProtectedRoute } from './components/ProtectedRoute';
 
@@ -45,7 +48,7 @@ function App() {
   return (
     <div className="App">
       <Navbar />
-      <Toaster position = "top-right" reverseOrder={false} />
+      <Toaster />
         <Routes>
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={<Home />} />
@@ -53,6 +56,8 @@ function App() {
           <Route path="/customer-signup" element={<CustomerSignupForm />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/private" element={<ProtectedRoute user={user}><PrivateTestForm /></ProtectedRoute> } />
+          <Route path="/available-barbers" element={<ProtectedRoute user={user}><AvailableBarbers /></ProtectedRoute> } />
+
         </Routes>
     </div>
   );
