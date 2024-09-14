@@ -7,7 +7,6 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
 import { Toaster } from 'react-hot-toast';
 import { Navigate } from 'react-router-dom';
-import {useLocation} from 'react-router-dom';
 
 import Navbar  from './components/Navbar';
 import CustomerNavbar from './components/CustomerNavbar';
@@ -17,6 +16,7 @@ import  LoginForm from './components/pages/authentication/LoginForm';
 import Home from './components/pages/Home';
 import PrivateTestForm from './components/pages/authentication/privateTestForm';
 import AvailableBarbers from './components/pages/appointments/AvailableBarbers';
+import BookAppointment from './components/pages/appointments/bookAppointment';
 
 import { ProtectedRoute } from './components/ProtectedRoute';
 
@@ -47,7 +47,7 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar />
+      {user ? <CustomerNavbar /> : <Navbar />} {/* If the user is logged in, the CustomerNavbar is displayed, else the Navbar is displayed */}
       <Toaster />
         <Routes>
           <Route path="/" element={<Navigate to="/home" />} />
@@ -57,6 +57,7 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/private" element={<ProtectedRoute user={user}><PrivateTestForm /></ProtectedRoute> } />
           <Route path="/available-barbers" element={<ProtectedRoute user={user}><AvailableBarbers /></ProtectedRoute> } />
+          <Route path="/book-appointment" element={<ProtectedRoute user={user}><BookAppointment /></ProtectedRoute> } />
 
         </Routes>
     </div>

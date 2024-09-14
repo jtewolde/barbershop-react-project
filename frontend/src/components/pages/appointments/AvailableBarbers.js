@@ -1,33 +1,19 @@
 // This page will display the available barbers for the customer to choose from.
 
 import React, { useState } from "react";
-import { toast } from "react-hot-toast";
 import { query, collection } from "firebase/firestore";
-import { auth } from "../../../firebase";
-import { signOut } from "firebase/auth";
 import { db } from "../../../firebase";
 import { getDocs } from "firebase/firestore";
 import { useEffect } from "react";
-import CustomerNavbar from "../../CustomerNavbar";
+import { useNavigate, Link } from "react-router-dom";
+
 import './dashboard.css';
-
-
-// Function to sign out the user
-const signOutUser = async () => {
-    try {
-        await signOut(auth);
-        toast.success("You have signed out successfully", { duration: 4000 });
-    }
-    catch (error) {
-        console.log(error.message);
-        toast.error("An error occurred while signing out");
-    }
-}
 
 
 export default function AvailableBarbers() {
 
     const [barbers, setBarbers] = useState([]);
+    const navigate = useNavigate();
 
     // Function to get the available barbers
     function displayBarbers() {
@@ -48,6 +34,11 @@ export default function AvailableBarbers() {
     }
     , []);
 
+    const handleBookAppointment = () => {
+        // Redirect to the book appointment page
+        navigate("/book-appointment");
+    }
+
     return (
         <div className="dashboard">
             <h1>Avaliable Barbers</h1>
@@ -64,7 +55,6 @@ export default function AvailableBarbers() {
                                 <th>Barber Shop Name </th>
                                 <th>Barber Shop Address</th>
                                 <th>Book Appointment</th>
-                                <th>Delete Appointment</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -76,15 +66,12 @@ export default function AvailableBarbers() {
                                 <td>{barber.phoneNumber}</td>
                                 <td>{barber.barberShopName}</td>
                                 <td>{barber.barberShopAddress}</td>
-                                <td><button className= "book-btn">Book</button></td>
-                                <td><button className= "delete-btn">Delete</button></td>
+                                <td><button className= "book-btn" onClick={handleBookAppointment}>Book</button></td>
                             </tr>
                         </tbody>
                     </table>
                 ))}
         </div>
-
-            <button onClick={signOutUser} className="signout-btn">Sign Out</button>
 
         </div>
     )
