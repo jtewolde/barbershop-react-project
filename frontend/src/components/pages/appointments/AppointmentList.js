@@ -4,15 +4,12 @@ import { db } from "../../../firebase";
 import { getDocs } from "firebase/firestore";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 
 import './dashboard.css';
 
 export default function AppointmentList() {
     
-    const navigate = useNavigate();
-
     const [appointments, setAppointments] = useState([]);
 
     // Function to get the appointments from the database and display them for the specific customer logged in
