@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
+import { auth } from "../../../firebase";
 
 import './dashboard.css';
 import "react-datepicker/dist/react-datepicker.css";
@@ -43,21 +44,21 @@ export default function BookAppointment() {
     const handleBookAppointment = async (e) => {
         e.preventDefault();
         const appointment = {
-            barberName: barbers[0].firstName + " " + barbers[0].lastName,
-            barberUsername: barbers[0].username,
-            barberEmail: barbers[0].email,
-            barberPhoneNumber: barbers[0].phoneNumber,
-            barberShopName: barbers[0].barberShopName,
-            barberShopAddress: barbers[0].barberShopAddress,
+            barber: barbers[document.getElementById("barber").selectedIndex].firstName + " " + barbers[document.getElementById("barber").selectedIndex].lastName,
+            barberEmail: barbers[document.getElementById("barber").selectedIndex].email,
+            barberShopName: barbers[document.getElementById("barber").selectedIndex].barberShopName,
+            barberShopAddress: barbers[document.getElementById("barber").selectedIndex].barberShopAddress,
+            barberPhoneNumber: barbers[document.getElementById("barber").selectedIndex].phoneNumber,
+            customer: auth.currentUser.email,
             date: date,
-            status: "Pending",
-            customerName: "John Doe",
+            status : "Pending"
         };
 
         try {
             await addDoc(collection(db, "appointments"), appointment);
             console.log("Appointment booked successfully");
             toast.success("Appointment booked successfully");
+            navigate("/appointments");
         } catch (e) {
             console.error("Error adding document: ", e);
             toast.error("Error booking appointment");
@@ -66,38 +67,17 @@ export default function BookAppointment() {
 
     return(
         <div className="dashboard">
-            <h1>Book Appointment</h1>
+            <h1 className="book-appointment-header">Book Appointment</h1>
             <div className="barbers">
-                <h2>Select a Barber</h2>
-                <table className = "barberTable">
-                    <thead>
-                        <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Phone Number</th>
-                            <th>Barber Shop Name </th>
-                            <th>Barber Shop Address</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {barbers.map((barber) => (
-                            <tr>
-                                <td>{barber.firstName}</td>
-                                <td>{barber.lastName}</td>
-                                <td>{barber.username}</td>
-                                <td>{barber.email}</td>
-                                <td>{barber.phoneNumber}</td>
-                                <td>{barber.barberShopName}</td>
-                                <td>{barber.barberShopAddress}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                <h2 className="select-barber-header">Select a Barber</h2>
+                <select name="barber" id="barber" className="barber-select" placeHolder="Select a Barber">
+                    {barbers.map((barber) => (
+                        <option value={barber.username}>{barber.firstName} {barber.lastName}</option>
+                    ))}
+                </select>
             </div>
             <div className="appointment">
-                <h2>Choose a barber and select a date and time for your appointment</h2>
+                <h2>Select a Date and Time</h2>
                 
                 <DatePicker 
                     selected={date}
@@ -108,12 +88,13 @@ export default function BookAppointment() {
                     timeFormat="h:mm aa"
                     timeIntervals={15}
                     timeCaption="Time"
-                    is24Hour={false}
+                    className = "date-picker"
+                    
                 />
                 
             </div>
-            <button onClick={() => navigate("/available-barbers")}>Back</button>
-            <button onClick={handleBookAppointment}>Book Appointment</button>
+            <button onClick={() => navigate("/available-barbers")} className="back-btn">Back</button>
+            <button onClick={handleBookAppointment} className="book-appointment-btn">Book Appointment</button>
         </div>
     )
 

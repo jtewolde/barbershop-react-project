@@ -54,7 +54,6 @@ export default function AvailableBarbers() {
                                 <th>Phone Number</th>
                                 <th>Barber Shop Name </th>
                                 <th>Barber Shop Address</th>
-                                <th>Book Appointment</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -66,11 +65,12 @@ export default function AvailableBarbers() {
                                 <td>{barber.phoneNumber}</td>
                                 <td>{barber.barberShopName}</td>
                                 <td>{barber.barberShopAddress}</td>
-                                <td><button className= "book-btn" onClick={handleBookAppointment}>Book</button></td>
                             </tr>
                         </tbody>
                     </table>
                 ))}
+
+                <button onClick={handleBookAppointment} className="book-appointment-btn">Book Appointment</button>
         </div>
 
         </div>

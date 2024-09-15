@@ -17,6 +17,7 @@ import Home from './components/pages/Home';
 import PrivateTestForm from './components/pages/authentication/privateTestForm';
 import AvailableBarbers from './components/pages/appointments/AvailableBarbers';
 import BookAppointment from './components/pages/appointments/bookAppointment';
+import AppointmentList from './components/pages/appointments/AppointmentList';
 
 import { ProtectedRoute } from './components/ProtectedRoute';
 
@@ -58,6 +59,7 @@ function App() {
           <Route path="/private" element={<ProtectedRoute user={user}><PrivateTestForm /></ProtectedRoute> } />
           <Route path="/available-barbers" element={<ProtectedRoute user={user}><AvailableBarbers /></ProtectedRoute> } />
           <Route path="/book-appointment" element={<ProtectedRoute user={user}><BookAppointment /></ProtectedRoute> } />
+          <Route path="/appointments" element={<ProtectedRoute user={user}><AppointmentList /></ProtectedRoute> } />
 
         </Routes>
     </div>
