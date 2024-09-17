@@ -7,6 +7,7 @@ import { auth } from '../firebase';
 import { toast } from 'react-hot-toast';
 
 
+
 // Function to sign out the user
 const signOutUser = async () => {
     try {
@@ -19,14 +20,15 @@ const signOutUser = async () => {
     }
 }
 
-export default function CustomerNavbar() {
+
+export default function BarberNavbar() {
     return (
         <nav className="navbar">
             <img src ={timelyCutsLogo} alt="Timely Cuts Logo" className="navbar-logo" />
             <ul>
-                <li><Link to="available-barbers" className="navbar-link">Available Barbers</Link></li>
-                <li><Link to="appointments" className="navbar-link">Appointments</Link></li>
-                <li><Link to="profile" className="navbar-link">Profile</Link></li>
+                <li><Link to="requested-appointments" className="navbar-link">Requested Appointments</Link></li>
+                <li><Link to="scheduled-appointments" className="navbar-link">Scheduled Appointments</Link></li>
+                <li> {auth.currentUser.email}</li>
                 <li><Link to ="/" className="navbar-link" onClick={signOutUser}>Sign Out</Link></li>
             </ul>
         </nav>

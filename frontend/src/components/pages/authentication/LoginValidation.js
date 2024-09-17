@@ -33,5 +33,6 @@ export default function validateLogin(values) {
         toast.error("Password must be at least 6 characters");
     }
 
+
     return errors;
 }

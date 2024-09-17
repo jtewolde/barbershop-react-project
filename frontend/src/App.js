@@ -1,67 +1,99 @@
-
 import './App.css';
 
 import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './firebase';
+import { auth, db } from './firebase'; // Import Firestore db
 import { Toaster } from 'react-hot-toast';
 import { Navigate } from 'react-router-dom';
+import { doc, getDoc } from 'firebase/firestore'; // For fetching user data
 
-import Navbar  from './components/Navbar';
+import Navbar from './components/Navbar';
 import CustomerNavbar from './components/CustomerNavbar';
-import  BarberSignupForm from './components/pages/authentication/BarberSignupForm';
-import  CustomerSignupForm  from './components/pages/authentication/CustomerSignupForm';
-import  LoginForm from './components/pages/authentication/LoginForm';
+import BarberNavbar from './components/BarberNavbar';
+
+import BarberSignupForm from './components/pages/authentication/BarberSignupForm';
+import CustomerSignupForm from './components/pages/authentication/CustomerSignupForm';
+import LoginForm from './components/pages/authentication/LoginForm';
 import Home from './components/pages/Home';
 import PrivateTestForm from './components/pages/authentication/privateTestForm';
 import AvailableBarbers from './components/pages/appointments/AvailableBarbers';
 import BookAppointment from './components/pages/appointments/bookAppointment';
-import AppointmentList from './components/pages/appointments/AppointmentList';
+import AppointmentList from './components/pages/appointments/CustomerAppointmentList';
+import BarberAppointmentList from './components/pages/appointments/BarberAppointmentList';
 
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
-  const [user, setUser] = useState(null); // This state is used to store the user information
-  const [loading, setLoading] = useState(true); // This state is used to store the loading state
+  const [user, setUser] = useState(null); // Stores the user info
+  const [loading, setLoading] = useState(true); // Loading state
+  const [userRole, setUserRole] = useState(null); // To store user role (barber/customer)
 
-  // This section of the App component is used to check if the user is logged in
-  useEffect(() => { 
-    const unsubscribe = onAuthStateChanged(auth, (user) => { 
-      if(user){ // If the user is logged in, the user information is stored in the state
-        setUser(user); // The user information is stored in the state
-        setLoading(false); // The loading state is set to false
-        return;
+  // This section of the App component checks if the user is logged in
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setUser(user); // Set the user info
+        setLoading(false); // Stop loading
+
+        // Fetch user role (customer or barber) from Firestore
+        try {
+          const barberDoc = await getDoc(doc(db, "barbers", user.uid));
+          const customerDoc = await getDoc(doc(db, "customers", user.uid));
+
+          if (barberDoc.exists()) {
+            setUserRole('barber'); // User is a barber
+          } else if (customerDoc.exists()) {
+            setUserRole('customer'); // User is a customer
+          } else {
+            setUserRole(null); // User is neither barber nor customer
+          }
+        } catch (error) {
+          console.log("Error fetching user role:", error);
+          setUserRole(null); // Error case
+        }
+
+      } else {
+        setUser(null); // No user is logged in
+        setUserRole(null); // No role since no user
+        setLoading(false);
       }
-      setUser(null); // If the user is not logged in, the state is set to null
-      setLoading(false); // The loading state is set to false
-
     });
 
-    return () => unsubscribe(); // This function is used to unsubscribe the user
-
+    return () => unsubscribe(); // Clean up
   }, []);
 
-  if(loading){ // If the loading state is true, the loading message is displayed
-    return <h1>Loading...</h1>
+  if (loading) {
+    return <h1>Loading...</h1>;
   }
 
   return (
     <div className="App">
-      {user ? <CustomerNavbar /> : <Navbar />} {/* If the user is logged in, the CustomerNavbar is displayed, else the Navbar is displayed */}
-      <Toaster />
-        <Routes>
-          <Route path="/" element={<Navigate to="/home" />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/barber-signup" element={<BarberSignupForm />} />
-          <Route path="/customer-signup" element={<CustomerSignupForm />} />
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="/private" element={<ProtectedRoute user={user}><PrivateTestForm /></ProtectedRoute> } />
-          <Route path="/available-barbers" element={<ProtectedRoute user={user}><AvailableBarbers /></ProtectedRoute> } />
-          <Route path="/book-appointment" element={<ProtectedRoute user={user}><BookAppointment /></ProtectedRoute> } />
-          <Route path="/appointments" element={<ProtectedRoute user={user}><AppointmentList /></ProtectedRoute> } />
+      {/* Conditionally render the appropriate navbar based on user role */}
+      {!user ? (
+        <Navbar />
+      ) : userRole === 'customer' ? (
+        <CustomerNavbar />
+      ) : userRole === 'barber' ? (
+        <BarberNavbar />
+      ) : (
+        <Navbar />
+      )}
 
-        </Routes>
+      <Toaster />
+      <Routes>
+        <Route path="/" element={<Navigate to="/home" />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/barber-signup" element={<BarberSignupForm />} />
+        <Route path="/customer-signup" element={<CustomerSignupForm />} />
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/private" element={<ProtectedRoute user={user}><PrivateTestForm /></ProtectedRoute>} />
+        <Route path="/available-barbers" element={<ProtectedRoute user={user}><AvailableBarbers /></ProtectedRoute>} />
+        <Route path="/book-appointment" element={<ProtectedRoute user={user}><BookAppointment /></ProtectedRoute>} />
+        <Route path="/appointments" element={<ProtectedRoute user={user}><AppointmentList /></ProtectedRoute>} />
+        <Route path="/requested-appointments" element={<ProtectedRoute user={user}><BarberAppointmentList /></ProtectedRoute>} />
+
+      </Routes>
     </div>
   );
 }

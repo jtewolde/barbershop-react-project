@@ -41,7 +41,7 @@ export default function LoginForm({ user }) {
             const barbersSnapshot = await getDocs(query(collection(db, "barbers"))); // Get all the barbers from the database
             barbersSnapshot.forEach((doc) => { // Loop through the barbers
                 if (doc.data().email === values.email) {  // If the barber's email matches the user's email, redirect to the private page
-                    navigate("/private"); 
+                    navigate("/requested-appointments");
                 }
             });
 

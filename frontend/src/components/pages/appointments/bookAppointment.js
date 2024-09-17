@@ -41,17 +41,19 @@ export default function BookAppointment() {
 
     , []);
 
+    // Function to book an appointment
     const handleBookAppointment = async (e) => {
         e.preventDefault();
+        const selectedBarber = barbers[document.getElementById("barber").selectedIndex];
         const appointment = {
-            barber: barbers[document.getElementById("barber").selectedIndex].firstName + " " + barbers[document.getElementById("barber").selectedIndex].lastName,
-            barberEmail: barbers[document.getElementById("barber").selectedIndex].email,
-            barberShopName: barbers[document.getElementById("barber").selectedIndex].barberShopName,
-            barberShopAddress: barbers[document.getElementById("barber").selectedIndex].barberShopAddress,
-            barberPhoneNumber: barbers[document.getElementById("barber").selectedIndex].phoneNumber,
-            customer: auth.currentUser.email,
+            barberEmail: selectedBarber.email,
+            barberName: selectedBarber.firstName + " " + selectedBarber.lastName,
+            barberShopName: selectedBarber.shopName,
+            barberShopAddress: selectedBarber.shopAddress,
+            customerEmail: auth.currentUser.email,
+            customerName: auth.currentUser.displayName,
             date: date,
-            status : "Pending"
+            status: "Pending"
         };
 
         try {

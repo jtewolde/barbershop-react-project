@@ -1,45 +1,49 @@
-import React from "react";
-import { query, collection } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { query, collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { db } from "../../../firebase";
-import { getDocs } from "firebase/firestore";
-import { useEffect } from "react";
-import { useState } from "react";
 import { getAuth } from "firebase/auth";
-
+import toast from "react-hot-toast";
 import './dashboard.css';
 
 export default function AppointmentList() {
-    
     const [appointments, setAppointments] = useState([]);
 
-    // Function to get the appointments from the database and display them for the specific customer logged in
+    // Function to fetch appointments for the logged-in customer
     function displayAppointments() {
-        const appointmentsRef = collection(db, "appointments"); // Reference to the appointments collection
-        const q = query(appointmentsRef); // Query to get the appointments
-        const appointmentsArray = []; // Array to store the appointments
-        getDocs(q).then((querySnapshot) => { // Get the documents from the query
-            querySnapshot.forEach((doc) => { // Loop through the documents
-                if(doc.data().customer === getAuth().currentUser.email) { // Check if the appointment is for the logged in customer
-                    appointmentsArray.push(doc.data()); // Add the appointment to the array
-                    console.log(doc.data()); // Log the appointment data
+        const appointmentsRef = collection(db, "appointments");
+        const q = query(appointmentsRef);
+        const appointmentsArray = [];
+
+        getDocs(q).then((querySnapshot) => {
+            querySnapshot.forEach((document) => {
+                // Include the document ID in the appointment data
+                const appointmentData = document.data();
+                if (appointmentData.customer === getAuth().currentUser.email) {
+                    appointmentsArray.push({ id: document.id, ...appointmentData }); // Add appointment with ID
                 }
             });
-            setAppointments(appointmentsArray); // Set the appointments state to the array
-        }
-        );
+            setAppointments(appointmentsArray);
+        });
     }
 
     useEffect(() => {
         displayAppointments();
-    }
-    , []);
+    }, []);
+
+    // Function to delete an appointment by its ID
+    const deleteAppointment = async (id) => {
+        const appointmentRef = doc(db, "appointments", id);
+        await deleteDoc(appointmentRef);
+        displayAppointments(); // Refresh the list after deletion
+        toast.success("Appointment deleted successfully", { duration: 4000 });
+    };
 
     return (
         <div className="dashboard">
             <h1>Appointments</h1>
             <div className="appointments">
                 {appointments.map((appointment) => (
-                    <table className = "barberTable">
+                    <table key={appointment.id} className="barberTable">
                         <thead>
                             <tr>
                                 <th>Barber</th>
@@ -50,6 +54,7 @@ export default function AppointmentList() {
                                 <th>Customer</th>
                                 <th>Date</th>
                                 <th>Status</th>
+                                <th>Delete Appointment</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -62,6 +67,14 @@ export default function AppointmentList() {
                                 <td>{appointment.customer}</td>
                                 <td>{appointment.date ? appointment.date.toDate().toString() : ""}</td>
                                 <td>{appointment.status}</td>
+                                <td>
+                                    <button
+                                        onClick={() => deleteAppointment(appointment.id)}
+                                        className="delete-btn"
+                                    >
+                                        Delete
+                                    </button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
