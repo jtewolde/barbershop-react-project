@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { query, collection, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { query, collection, getDocs, doc, updateDoc, deleteDoc, where } from "firebase/firestore";
 import { db } from "../../../firebase";
 import { getAuth } from "firebase/auth";
 import toast from "react-hot-toast";
@@ -11,7 +11,7 @@ export default function BarberAppointmentList() {
     // Function to get the appointments from the database for the specific logged-in barber
     function displayRequestedAppointments() {
         const appointmentsRef = collection(db, "appointments"); // Reference to the appointments collection
-        const q = query(appointmentsRef); // Query to get the appointments
+        const q = query(appointmentsRef, where("status", "==", "Pending")); // Query to get the appointments
         const appointmentsArray = []; // Array to store the appointments
 
         getDocs(q).then((querySnapshot) => {
@@ -44,7 +44,8 @@ export default function BarberAppointmentList() {
             const appointmentRef = doc(db, "appointments", id);
             await updateDoc(appointmentRef, { status });
             toast.success("Appointment status updated successfully", { duration: 4000 });
-            displayRequestedAppointments(); // Refresh the appointments after updating
+            // Remove the appointment from the list after updating the status to "Confirmed"
+            setAppointments(appointments.filter((appointment) => appointment.id !== id)); // Remove the appointment from the list
         } catch (error) {
             console.error("Error updating appointment:", error);
         }
@@ -61,6 +62,22 @@ export default function BarberAppointmentList() {
             console.error("Error deleting appointment:", error);
         }
     };
+
+    // Function to format the date
+    const formatDate = (timestamp) => {
+        if (!timestamp) return ""; // Return empty string if no timestamp
+
+        const date = timestamp.toDate(); // Convert timestamp to date
+        return date.toLocaleDateString("en-US", {
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true
+        });
+    }
 
     return (
         <div className="dashboard">
@@ -85,13 +102,13 @@ export default function BarberAppointmentList() {
                         {appointments.length > 0 ? (
                             appointments.map((appointment) => (
                                 <tr key={appointment.id}> {/* Key added */}
-                                    <td>{appointment.barber}</td>
+                                    <td>{appointment.barberName}</td>
                                     <td>{appointment.barberEmail}</td>
                                     <td>{appointment.barberShopName}</td>
                                     <td>{appointment.barberShopAddress}</td>
                                     <td>{appointment.barberPhoneNumber}</td>
                                     <td>{appointment.customer}</td>
-                                    <td>{appointment.date ? appointment.date.toDate().toString() : ""}</td>
+                                    <td>{formatDate(appointment.date)}</td>
                                     <td>{appointment.status}</td>
                                     <td>
                                         <button onClick={() => updateStatus(appointment.id, "Confirmed")} className="book-btn">

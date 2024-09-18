@@ -21,6 +21,7 @@ import AvailableBarbers from './components/pages/appointments/AvailableBarbers';
 import BookAppointment from './components/pages/appointments/bookAppointment';
 import AppointmentList from './components/pages/appointments/CustomerAppointmentList';
 import BarberAppointmentList from './components/pages/appointments/BarberAppointmentList';
+import ScheduledAppointments from './components/pages/appointments/ScheduledAppointments';
 
 import { ProtectedRoute } from './components/ProtectedRoute';
 
@@ -92,6 +93,7 @@ function App() {
         <Route path="/book-appointment" element={<ProtectedRoute user={user}><BookAppointment /></ProtectedRoute>} />
         <Route path="/appointments" element={<ProtectedRoute user={user}><AppointmentList /></ProtectedRoute>} />
         <Route path="/requested-appointments" element={<ProtectedRoute user={user}><BarberAppointmentList /></ProtectedRoute>} />
+        <Route path="/scheduled-appointments" element={<ProtectedRoute user={user}><ScheduledAppointments /></ProtectedRoute>} />
 
       </Routes>
     </div>

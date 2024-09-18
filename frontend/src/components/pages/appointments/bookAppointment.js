@@ -48,10 +48,10 @@ export default function BookAppointment() {
         const appointment = {
             barberEmail: selectedBarber.email,
             barberName: selectedBarber.firstName + " " + selectedBarber.lastName,
-            barberShopName: selectedBarber.shopName,
-            barberShopAddress: selectedBarber.shopAddress,
-            customerEmail: auth.currentUser.email,
-            customerName: auth.currentUser.displayName,
+            barberShopName: selectedBarber.barberShopName,
+            barberShopAddress: selectedBarber.barberShopAddress,
+            barberPhoneNumber: selectedBarber.phoneNumber,
+            customer : auth.currentUser.email,
             date: date,
             status: "Pending"
         };

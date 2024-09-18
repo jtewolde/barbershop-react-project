@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { query, collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { db } from "../../../firebase";
-import { getAuth } from "firebase/auth";
 import toast from "react-hot-toast";
 import './dashboard.css';
 
-export default function AppointmentList() {
+export default function ScheduledAppointments() {
     const [appointments, setAppointments] = useState([]);
 
     // Function to fetch appointments for the logged-in customer
     function displayAppointments() {
         const appointmentsRef = collection(db, "appointments");
+
+        // Fetch appointments where the barber email is the same as the logged-in user's email
         const q = query(appointmentsRef);
         const appointmentsArray = [];
 
@@ -18,17 +19,24 @@ export default function AppointmentList() {
             querySnapshot.forEach((document) => {
                 // Include the document ID in the appointment data
                 const appointmentData = document.data();
-                if (appointmentData.customer === getAuth().currentUser.email) {
-                    appointmentsArray.push({ id: document.id, ...appointmentData }); // Add appointment with ID
-                }
-            });
-            setAppointments(appointmentsArray);
+                console.log("Appointment Data: ", appointmentData);
+                appointmentsArray.push({ id: document.id, ...appointmentData }); // Add appointment with ID
+        });
+
+        setAppointments(appointmentsArray);
+        console.log("Appointments: ", appointmentsArray);
+
         });
     }
 
     useEffect(() => {
         displayAppointments();
     }, []);
+
+    // Function to only display the appointments that are scheduled or their status is confirmed
+    const displayScheduledAppointments = () => {
+        return appointments.filter((appointment) => appointment.status === "Scheduled" || appointment.status === "Confirmed");
+    };
 
     // Function to delete an appointment by its ID
     const deleteAppointment = async (id) => {
@@ -38,7 +46,6 @@ export default function AppointmentList() {
         toast.success("Appointment deleted successfully", { duration: 4000 });
     };
 
-    // Function to format the date
     const formatDate = (timestamp) => {
         if (!timestamp) return ""; // Return empty string if no timestamp
 
@@ -56,9 +63,9 @@ export default function AppointmentList() {
 
     return (
         <div className="dashboard">
-            <h1>Appointments</h1>
+            <h1> Scheduled Appointments</h1>
             <div className="appointments">
-                {appointments.map((appointment) => (
+                {displayScheduledAppointments().map((appointment) => (
                     <table key={appointment.id} className="barberTable">
                         <thead>
                             <tr>
@@ -81,17 +88,10 @@ export default function AppointmentList() {
                                 <td>{appointment.barberShopAddress}</td>
                                 <td>{appointment.barberPhoneNumber}</td>
                                 <td>{appointment.customer}</td>
-                                <td>{formatDate(appointment.date)}
-                                </td>
-
+                                <td>{formatDate(appointment.date)}</td>
                                 <td>{appointment.status}</td>
                                 <td>
-                                    <button
-                                        onClick={() => deleteAppointment(appointment.id)}
-                                        className="delete-btn"
-                                    >
-                                        Delete
-                                    </button>
+                                    <button onClick={() => deleteAppointment(appointment.id)} className="delete-btn">Delete</button>
                                 </td>
                             </tr>
                         </tbody>
