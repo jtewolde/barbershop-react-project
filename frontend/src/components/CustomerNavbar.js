@@ -26,7 +26,8 @@ export default function CustomerNavbar() {
             <ul>
                 <li><Link to="available-barbers" className="navbar-link">Available Barbers</Link></li>
                 <li><Link to="appointments" className="navbar-link">Appointments</Link></li>
-                <li><Link to="profile" className="navbar-link">Profile</Link></li>
+                <li><Link to="customer-calendar" className="navbar-link">Calendar</Link></li>
+                <li>{auth.currentUser.email}</li>
                 <li><Link to ="/" className="navbar-link" onClick={signOutUser}>Sign Out</Link></li>
             </ul>
         </nav>

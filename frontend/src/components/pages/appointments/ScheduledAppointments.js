@@ -27,6 +27,8 @@ export default function ScheduledAppointments() {
         console.log("Appointments: ", appointmentsArray);
 
         });
+
+
     }
 
     useEffect(() => {

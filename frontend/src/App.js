@@ -23,6 +23,10 @@ import AppointmentList from './components/pages/appointments/CustomerAppointment
 import BarberAppointmentList from './components/pages/appointments/BarberAppointmentList';
 import ScheduledAppointments from './components/pages/appointments/ScheduledAppointments';
 
+import CalendarView from './components/CalendarView';
+import BarberCalendar from './components/pages/appointments/calendars/BarberCalendar';
+import CustomerCalendar from './components/pages/appointments/calendars/CustomerCalendar';
+
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
@@ -94,6 +98,8 @@ function App() {
         <Route path="/appointments" element={<ProtectedRoute user={user}><AppointmentList /></ProtectedRoute>} />
         <Route path="/requested-appointments" element={<ProtectedRoute user={user}><BarberAppointmentList /></ProtectedRoute>} />
         <Route path="/scheduled-appointments" element={<ProtectedRoute user={user}><ScheduledAppointments /></ProtectedRoute>} />
+        <Route path="/barber-calendar" element={<ProtectedRoute user={user}><BarberCalendar /></ProtectedRoute>} />
+        <Route path="/customer-calendar" element={<ProtectedRoute user={user}><CustomerCalendar /></ProtectedRoute>} />
 
       </Routes>
     </div>

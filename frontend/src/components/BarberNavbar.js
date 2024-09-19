@@ -5,7 +5,7 @@ import timelyCutsLogo from "../components/pages/images/TimelyCuts2.png";
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 import { toast } from 'react-hot-toast';
-
+import CalendarView from './CalendarView';
 
 
 // Function to sign out the user
@@ -28,6 +28,7 @@ export default function BarberNavbar() {
             <ul>
                 <li><Link to="requested-appointments" className="navbar-link">Requested Appointments</Link></li>
                 <li><Link to="scheduled-appointments" className="navbar-link">Scheduled Appointments</Link></li>
+                <li><Link to="barber-calendar" className="navbar-link">Calendar</Link></li>
                 <li> {auth.currentUser.email}</li>
                 <li><Link to ="/" className="navbar-link" onClick={signOutUser}>Sign Out</Link></li>
             </ul>
