@@ -1,6 +1,6 @@
 import React from 'react';
 import './Navbar.css';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import timelyCutsLogo from "../components/pages/images/TimelyCuts2.png";
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
@@ -20,15 +20,29 @@ const signOutUser = async () => {
 }
 
 export default function CustomerNavbar() {
+
+    const [isOpen, setIsOpen] = React.useState(false);
+
+    const toggleNavbar = () => {
+        setIsOpen(!isOpen);
+    }
+
     return (
         <nav className="navbar">
             <img src ={timelyCutsLogo} alt="Timely Cuts Logo" className="navbar-logo" />
-            <ul>
-                <li><Link to="available-barbers" className="navbar-link">Available Barbers</Link></li>
-                <li><Link to="appointments" className="navbar-link">Appointments</Link></li>
-                <li><Link to="customer-calendar" className="navbar-link">Calendar</Link></li>
+
+            <div className="menu" onClick={toggleNavbar}>
+                <span className="bar"></span>
+                <span className="bar"></span>
+                <span className="bar"></span>
+            </div>
+
+            <ul className={isOpen ? "open" : ""}>
+                <li><NavLink to="available-barbers" className="navbar-link">Available Barbers</NavLink></li>
+                <li><NavLink to="appointments" className="navbar-link">Appointments</NavLink></li>
+                <li><NavLink to="customer-calendar" className="navbar-link">Calendar</NavLink></li>
                 <li>{auth.currentUser.email}</li>
-                <li><Link to ="/" className="navbar-link" onClick={signOutUser}>Sign Out</Link></li>
+                <li><NavLink to ="/" className="navbar-link" onClick={signOutUser}>Sign Out</NavLink></li>
             </ul>
         </nav>
     )
