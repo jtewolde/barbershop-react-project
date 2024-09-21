@@ -42,7 +42,7 @@ export default function BarberNavbar() {
                 <li><NavLink to="requested-appointments" className="navbar-link">Requested Appointments</NavLink></li>
                 <li><NavLink to="scheduled-appointments" className="navbar-link">Scheduled Appointments</NavLink></li>
                 <li><NavLink to="barber-calendar" className="navbar-link">Calendar</NavLink></li>
-                <li> {auth.currentUser.email}</li>
+                {/* <li> {auth.currentUser.email}</li> */}
                 <li><NavLink to ="/" className="navbar-link" onClick={signOutUser}>Sign Out</NavLink></li>
             </ul>
         </nav>

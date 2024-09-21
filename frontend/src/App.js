@@ -23,7 +23,6 @@ import AppointmentList from './components/pages/appointments/CustomerAppointment
 import BarberAppointmentList from './components/pages/appointments/BarberAppointmentList';
 import ScheduledAppointments from './components/pages/appointments/ScheduledAppointments';
 
-import CalendarView from './components/CalendarView';
 import BarberCalendar from './components/pages/appointments/calendars/BarberCalendar';
 import CustomerCalendar from './components/pages/appointments/calendars/CustomerCalendar';
 
@@ -102,6 +101,10 @@ function App() {
         <Route path="/customer-calendar" element={<ProtectedRoute user={user}><CustomerCalendar /></ProtectedRoute>} />
 
       </Routes>
+
+      <footer className="footer"> Logged In as {user ? user.email : "Guest"} <br />
+         @2024 Timely Cuts. All Rights Reserved.
+      </footer>
     </div>
   );
 }

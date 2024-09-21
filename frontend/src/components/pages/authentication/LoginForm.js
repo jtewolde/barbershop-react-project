@@ -93,9 +93,6 @@ export default function LoginForm({ user }) {
                     </div>
                     <button type="submit">Login</button>
                 </form>
-
-                <h1>User Logged In</h1>
-                {auth.currentUser ? auth.currentUser.email : "No user is currently logged in."}
             </div>
         </div>
     );

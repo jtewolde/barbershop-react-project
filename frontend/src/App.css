@@ -29,6 +29,18 @@ body{
   color: white;
 }
 
+.footer{
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+  margin-top: auto;
+  bottom: 0;
+  width: 100%;
+  background-color: burlywood;
+
+}
+
 .App-link {
   color: #61dafb;
 }
