@@ -72,40 +72,45 @@ function App() {
   }
 
   return (
-    <div className="App">
-      {/* Conditionally render the appropriate navbar based on user role */}
-      {!user ? (
-        <Navbar />
-      ) : userRole === 'customer' ? (
-        <CustomerNavbar />
-      ) : userRole === 'barber' ? (
-        <BarberNavbar />
-      ) : (
-        <Navbar />
-      )}
+    <main>
 
-      <Toaster />
-      <Routes>
-        <Route path="/" element={<Navigate to="/home" />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/barber-signup" element={<BarberSignupForm />} />
-        <Route path="/customer-signup" element={<CustomerSignupForm />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/private" element={<ProtectedRoute user={user}><PrivateTestForm /></ProtectedRoute>} />
-        <Route path="/available-barbers" element={<ProtectedRoute user={user}><AvailableBarbers /></ProtectedRoute>} />
-        <Route path="/book-appointment" element={<ProtectedRoute user={user}><BookAppointment /></ProtectedRoute>} />
-        <Route path="/appointments" element={<ProtectedRoute user={user}><AppointmentList /></ProtectedRoute>} />
-        <Route path="/requested-appointments" element={<ProtectedRoute user={user}><BarberAppointmentList /></ProtectedRoute>} />
-        <Route path="/scheduled-appointments" element={<ProtectedRoute user={user}><ScheduledAppointments /></ProtectedRoute>} />
-        <Route path="/barber-calendar" element={<ProtectedRoute user={user}><BarberCalendar /></ProtectedRoute>} />
-        <Route path="/customer-calendar" element={<ProtectedRoute user={user}><CustomerCalendar /></ProtectedRoute>} />
+      <div className="App">
+        {/* Conditionally render the appropriate navbar based on user role */}
+        {!user ? (
+          <Navbar />
+        ) : userRole === 'customer' ? (
+          <CustomerNavbar />
+        ) : userRole === 'barber' ? (
+          <BarberNavbar />
+        ) : (
+          <Navbar />
+        )}
 
-      </Routes>
+        <Toaster />
+        <Routes>
+          <Route path="/" element={<Navigate to="/home" />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/barber-signup" element={<BarberSignupForm />} />
+          <Route path="/customer-signup" element={<CustomerSignupForm />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/private" element={<ProtectedRoute user={user}><PrivateTestForm /></ProtectedRoute>} />
+          <Route path="/available-barbers" element={<ProtectedRoute user={user}><AvailableBarbers /></ProtectedRoute>} />
+          <Route path="/book-appointment" element={<ProtectedRoute user={user}><BookAppointment /></ProtectedRoute>} />
+          <Route path="/appointments" element={<ProtectedRoute user={user}><AppointmentList /></ProtectedRoute>} />
+          <Route path="/requested-appointments" element={<ProtectedRoute user={user}><BarberAppointmentList /></ProtectedRoute>} />
+          <Route path="/scheduled-appointments" element={<ProtectedRoute user={user}><ScheduledAppointments /></ProtectedRoute>} />
+          <Route path="/barber-calendar" element={<ProtectedRoute user={user}><BarberCalendar /></ProtectedRoute>} />
+          <Route path="/customer-calendar" element={<ProtectedRoute user={user}><CustomerCalendar /></ProtectedRoute>} />
 
-      <footer className="footer"> Logged In as {user ? user.email : "Guest"} <br />
-         @2024 Timely Cuts. All Rights Reserved.
-      </footer>
-    </div>
+        </Routes>
+
+        <footer className="footer"> Logged In as {user ? user.email : "Guest"} <br />
+          @2024 Timely Cuts. All Rights Reserved.
+        </footer>
+
+      </div>
+
+    </main>
   );
 }
 

@@ -82,7 +82,7 @@ export default function BarberSignupForm({user}) {
 
                 console.log("User signed up successfully");
                 toast.success("Welcome! You have signed up successfully!", {duration: 4000});
-                navigate('/private');
+                navigate('/requested-appointments');
             } else {
                 console.log("User not signed up");
                 toast.error("An error occurred while signing up");

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { query, collection, getDocs, doc, deleteDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 import { db } from "../../../firebase";
 import toast from "react-hot-toast";
 import './dashboard.css';
@@ -19,8 +20,13 @@ export default function ScheduledAppointments() {
             querySnapshot.forEach((document) => {
                 // Include the document ID in the appointment data
                 const appointmentData = document.data();
-                console.log("Appointment Data: ", appointmentData);
-                appointmentsArray.push({ id: document.id, ...appointmentData }); // Add appointment with ID
+
+                const currentUserEmail = getAuth().currentUser.email.toLowerCase();
+                const barberEmail = appointmentData.barberEmail.toLowerCase();
+
+                if (currentUserEmail === barberEmail)
+                    appointmentsArray.push({ id: document.id, ...appointmentData });
+                    console.log("Appointment Data: ", appointmentData);
         });
 
         setAppointments(appointmentsArray);
@@ -72,11 +78,9 @@ export default function ScheduledAppointments() {
                         <thead>
                             <tr>
                                 <th>Barber</th>
-                                <th>Barber Email</th>
-                                <th>Barber Shop Name</th>
-                                <th>Barber Shop Address</th>
-                                <th>Barber Phone Number</th>
-                                <th>Customer</th>
+                                <th>Customer Name</th>
+                                <th>Customer Email</th>
+                                <th>Customer Phone Number</th>
                                 <th>Date</th>
                                 <th>Status</th>
                                 <th>Delete Appointment</th>
@@ -85,11 +89,9 @@ export default function ScheduledAppointments() {
                         <tbody>
                             <tr>
                                 <td>{appointment.barberName}</td>
-                                <td>{appointment.barberEmail}</td>
-                                <td>{appointment.barberShopName}</td>
-                                <td>{appointment.barberShopAddress}</td>
-                                <td>{appointment.barberPhoneNumber}</td>
+                                <td>{appointment.customerName}</td>
                                 <td>{appointment.customer}</td>
+                                <td>{appointment.customerPhoneNumber}</td>
                                 <td>{formatDate(appointment.date)}</td>
                                 <td>{appointment.status}</td>
                                 <td>

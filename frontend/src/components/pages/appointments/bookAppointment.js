@@ -40,32 +40,72 @@ export default function BookAppointment() {
     }
 
     , []);
+    
+    // Function to get the customer information from the database
+    async function getCustomerInfo(email) {
+        const customersRef = collection(db, "customers"); // Reference to the customers collection
+        const q = query(customersRef); // Query to get the customers
+        let customerInfo = {}; // Object to store the customer info
 
-    // Function to book an appointment
+        const querySnapshot = await getDocs(q); // Get the documents from the query
+        querySnapshot.forEach((doc) => { // Loop through the documents
+            const customer = doc.data(); // Get the customer data
+            if (customer.email.toLowerCase() === email.toLowerCase()) { // Check if the customer email matches
+                customerInfo = { // Set the customer info object
+                    firstName: customer.firstName,
+                    lastName: customer.lastName,
+                    phoneNumber: customer.phoneNumber
+                };
+            }
+        });
+
+        return customerInfo; // Return the customer info
+    }
+
+
     const handleBookAppointment = async (e) => {
         e.preventDefault();
         const selectedBarber = barbers[document.getElementById("barber").selectedIndex];
-        const appointment = {
-            barberEmail: selectedBarber.email,
-            barberName: selectedBarber.firstName + " " + selectedBarber.lastName,
-            barberShopName: selectedBarber.barberShopName,
-            barberShopAddress: selectedBarber.barberShopAddress,
-            barberPhoneNumber: selectedBarber.phoneNumber,
-            customer : auth.currentUser.email,
-            date: date,
-            status: "Pending"
-        };
-
+    
         try {
+            // Fetch the customer information asynchronously
+            const customerInfo = await getCustomerInfo(auth.currentUser.email);
+    
+            if (!customerInfo.firstName || !customerInfo.lastName || !customerInfo.phoneNumber) {
+                throw new Error("Customer information not found.");
+            }
+    
+            const customerNameData = customerInfo.firstName + " " + customerInfo.lastName;
+            const customerPhoneNumberData = customerInfo.phoneNumber;
+    
+            console.log("Customer Name: ", customerNameData);
+            console.log("Customer Phone Number: ", customerPhoneNumberData);
+    
+            const appointment = {
+                barberEmail: selectedBarber.email,
+                barberName: selectedBarber.firstName + " " + selectedBarber.lastName,
+                barberShopName: selectedBarber.barberShopName,
+                barberShopAddress: selectedBarber.barberShopAddress,
+                barberPhoneNumber: selectedBarber.phoneNumber,
+                customer: auth.currentUser.email,
+                customerName: customerNameData,
+                customerPhoneNumber: customerPhoneNumberData,
+                date: date,
+                status: "Pending"
+            };
+    
             await addDoc(collection(db, "appointments"), appointment);
             console.log("Appointment booked successfully");
             toast.success("Appointment booked successfully");
+    
+            console.log("Appointment Data: ", appointment);
             navigate("/appointments");
         } catch (e) {
             console.error("Error adding document: ", e);
             toast.error("Error booking appointment");
         }
-    }
+    };
+     
 
     return(
         <div className="dashboard">
