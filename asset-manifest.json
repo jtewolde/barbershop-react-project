@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/barbershop-react-project/static/css/main.1af75752.css",
+    "main.js": "/barbershop-react-project/static/js/main.1d3502a7.js",
+    "static/js/453.ffc8d081.chunk.js": "/barbershop-react-project/static/js/453.ffc8d081.chunk.js",
+    "static/media/TimelyCuts2.png": "/barbershop-react-project/static/media/TimelyCuts2.84447a24752861419346.png",
+    "static/media/cut7.jpg": "/barbershop-react-project/static/media/cut7.1f40ab978675e377cdff.jpg",
+    "static/media/cut3.jpg": "/barbershop-react-project/static/media/cut3.17af532d2f0b9cfce69b.jpg",
+    "static/media/cut4.jpg": "/barbershop-react-project/static/media/cut4.b0b061a4d5f789d2cfb5.jpg",
+    "static/media/cut5.jpg": "/barbershop-react-project/static/media/cut5.c19d2f5d6a8f563dde30.jpg",
+    "index.html": "/barbershop-react-project/index.html",
+    "main.1af75752.css.map": "/barbershop-react-project/static/css/main.1af75752.css.map",
+    "main.1d3502a7.js.map": "/barbershop-react-project/static/js/main.1d3502a7.js.map",
+    "453.ffc8d081.chunk.js.map": "/barbershop-react-project/static/js/453.ffc8d081.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1af75752.css",
+    "static/js/main.1d3502a7.js"
+  ]
+}
