@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/barbershop-react-project/static/css/main.1af75752.css",
-    "main.js": "/barbershop-react-project/static/js/main.a733cd96.js",
+    "main.js": "/barbershop-react-project/static/js/main.3cd013f2.js",
     "static/js/453.ffc8d081.chunk.js": "/barbershop-react-project/static/js/453.ffc8d081.chunk.js",
     "static/media/TimelyCuts2.png": "/barbershop-react-project/static/media/TimelyCuts2.84447a24752861419346.png",
     "static/media/cut7.jpg": "/barbershop-react-project/static/media/cut7.1f40ab978675e377cdff.jpg",
@@ -10,11 +10,11 @@
     "static/media/cut5.jpg": "/barbershop-react-project/static/media/cut5.c19d2f5d6a8f563dde30.jpg",
     "index.html": "/barbershop-react-project/index.html",
     "main.1af75752.css.map": "/barbershop-react-project/static/css/main.1af75752.css.map",
-    "main.a733cd96.js.map": "/barbershop-react-project/static/js/main.a733cd96.js.map",
+    "main.3cd013f2.js.map": "/barbershop-react-project/static/js/main.3cd013f2.js.map",
     "453.ffc8d081.chunk.js.map": "/barbershop-react-project/static/js/453.ffc8d081.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.1af75752.css",
-    "static/js/main.a733cd96.js"
+    "static/js/main.3cd013f2.js"
   ]
 }
