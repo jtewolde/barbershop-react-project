@@ -88,7 +88,7 @@ function App() {
 
         <Toaster />
         <Routes>
-          <Route path="/" element={<Navigate to="/home" />} />
+          <Route path="/barbershop-react-project" element={<Navigate to="/home" />} />
           <Route path="/home" element={<Home />} />
           <Route path="/barber-signup" element={<BarberSignupForm />} />
           <Route path="/customer-signup" element={<CustomerSignupForm />} />
