@@ -1,9 +1,11 @@
 import './App.css';
+
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes} from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from './firebase'; // Import Firestore db
 import { Toaster } from 'react-hot-toast';
+import { Navigate } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore'; // For fetching user data
 
 import Navbar from './components/Navbar';
@@ -85,29 +87,28 @@ function App() {
         )}
 
         <Toaster />
-
-        {/* Router setup */}
-        <Router basename="/barbershop-react-project">
-          {/* Routes for the app */}
-          <Routes>
-            {/* Redirect from root to /home */}
-            <Route path="/" element={<Navigate to="/home" />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/barber-signup" element={<BarberSignupForm />} />
-            <Route path="/customer-signup" element={<CustomerSignupForm />} />
-            <Route path="/login" element={<LoginForm />} />
-            <Route path="/private" element={<ProtectedRoute user={user}><PrivateTestForm /></ProtectedRoute>} />
-            <Route path="/available-barbers" element={<ProtectedRoute user={user}><AvailableBarbers /></ProtectedRoute>} />
-            <Route path="/book-appointment" element={<ProtectedRoute user={user}><BookAppointment /></ProtectedRoute>} />
-            <Route path="/appointments" element={<ProtectedRoute user={user}><AppointmentList /></ProtectedRoute>} />
-            <Route path="/requested-appointments" element={<ProtectedRoute user={user}><BarberAppointmentList /></ProtectedRoute>} />
-            <Route path="/scheduled-appointments" element={<ProtectedRoute user={user}><ScheduledAppointments /></ProtectedRoute>} />
-            <Route path="/barber-calendar" element={<ProtectedRoute user={user}><BarberCalendar /></ProtectedRoute>} />
-            <Route path="/customer-calendar" element={<ProtectedRoute user={user}><CustomerCalendar /></ProtectedRoute>} />
-          </Routes>
-        </Router>
         
+
+        {/* Routes for the app */}
+        <Routes>
+          <Route path="/" element={<Navigate to="/home" />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/barber-signup" element={<BarberSignupForm />} />
+          <Route path="/customer-signup" element={<CustomerSignupForm />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/private" element={<ProtectedRoute user={user}><PrivateTestForm /></ProtectedRoute>} />
+          <Route path="/available-barbers" element={<ProtectedRoute user={user}><AvailableBarbers /></ProtectedRoute>} />
+          <Route path="/book-appointment" element={<ProtectedRoute user={user}><BookAppointment /></ProtectedRoute>} />
+          <Route path="/appointments" element={<ProtectedRoute user={user}><AppointmentList /></ProtectedRoute>} />
+          <Route path="/requested-appointments" element={<ProtectedRoute user={user}><BarberAppointmentList /></ProtectedRoute>} />
+          <Route path="/scheduled-appointments" element={<ProtectedRoute user={user}><ScheduledAppointments /></ProtectedRoute>} />
+          <Route path="/barber-calendar" element={<ProtectedRoute user={user}><BarberCalendar /></ProtectedRoute>} />
+          <Route path="/customer-calendar" element={<ProtectedRoute user={user}><CustomerCalendar /></ProtectedRoute>} />
+
+        </Routes>
+
         {/* Footer */}
+
         <footer className="footer"> Logged In as {user ? user.email : "Guest"} <br />
           @2024 Timely Cuts. All Rights Reserved.
         </footer>
