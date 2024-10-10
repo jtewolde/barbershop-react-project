@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "firebase": "^10.13.1",
-    "react-hot-toast": "^2.4.1"
-  }
-}
